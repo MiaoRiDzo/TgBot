@@ -16,18 +16,18 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     user = User(
-        TG_ID = message.from_user.id,
+        TG_ID = int(message.from_user.id),
         UserName = message.from_user.first_name
     )
-    addObject(user)
     await message.answer(f'Пользователь {user.UserName} с ID {user.TG_ID} добавлен')
+    addObject(user)
 
 @dp.message(Command("del"))
 async def cmd_del(message: types.Message):
     session = Session(engine)
     user = session.query(User).get(message.from_user.id)
     try:
-        await delObj(user)
+        delObj(user)
         await message.answer(f'Пользователь {user.UserName} с ID {user.TG_ID} удален')
     except Exception as error:
         await message.answer(f'Ошибка:\n{error}')
