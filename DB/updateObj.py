@@ -1,5 +1,5 @@
 from config import *
-from model import *
+from DB.models import *
 from sqlalchemy.orm import Session
 
 def update_object(model_class, id, **kwargs):
