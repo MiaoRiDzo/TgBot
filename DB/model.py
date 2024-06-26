@@ -84,6 +84,3 @@ class Request(Base):
 
     user = relationship("User", back_populates="requests")
     request_status = relationship("RequestStatus", back_populates="requests")
-
-# Create all tables in the database
-Base.metadata.create_all(engine)
