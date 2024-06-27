@@ -23,5 +23,5 @@ jobs:
           sshpass -e ssh -o StrictHostKeyChecking=no admin_63@178.161.150.241 << 'EOF'
             cd /home/admin_63/TgBot
             git pull origin main
-            sudo systemctl restart aiogram_bot.service
+            echo $SSHPASS | sudo -S systemctl restart aiogram_bot.service
           EOF
