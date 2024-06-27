@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no admin_63@178.161.150.241 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p 22 admin_63@178.161.150.241 << 'EOF'
             cd /home/admin_63/TgBot
             git pull origin main
             sudo systemctl restart aiogram_bot.service
