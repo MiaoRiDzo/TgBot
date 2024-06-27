@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-#from model import *
-
-engine = create_engine('sqlite:///DB/dbMain.db')
+from DB.models import *
+from DB.DBconfig import *
 Session = sessionmaker(bind=engine)
 
 def addObject(obj):

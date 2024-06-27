@@ -1,9 +1,8 @@
 from sqlalchemy import create_engine, MetaData, Table, Integer, String, Column, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-
+# from DBconfig import engine 
 # Create an engine
-engine = create_engine('sqlite:///DB/dbMain.db')
 
 # Define the base class
 Base = declarative_base()
@@ -12,7 +11,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
     TG_ID = Column(Integer, primary_key=True)
-    UserName = Column(String, nullable=False)
+    UserName = Column(String(255), nullable=False)
 
     requests = relationship("Request", back_populates="user")
 
@@ -20,7 +19,7 @@ class User(Base):
 class EquipmentType(Base):
     __tablename__ = 'equipment_type'
     EquipTypeID = Column(Integer, primary_key=True)
-    EquipTypeName = Column(String, nullable=False)
+    EquipTypeName = Column(String(255), nullable=False)
 
     equipment = relationship("Equipment", back_populates="equipment_type")
 
@@ -28,7 +27,7 @@ class EquipmentType(Base):
 class EquipmentStatus(Base):
     __tablename__ = 'equipment_status'
     EquipmenStatusID = Column(Integer, primary_key=True)
-    EquipmentStatusName = Column(String, nullable=False)
+    EquipmentStatusName = Column(String(255), nullable=False)
 
     equipment = relationship("Equipment", back_populates="equipment_status")
 
@@ -36,7 +35,7 @@ class EquipmentStatus(Base):
 class Zone(Base):
     __tablename__ = 'zone'
     ZoneID = Column(Integer, primary_key=True)
-    ZoneName = Column(String, nullable=False)
+    ZoneName = Column(String(255), nullable=False)
     Floor = Column(Integer)
 
     cabinets = relationship("Cabinet", back_populates="zone")
@@ -45,8 +44,8 @@ class Zone(Base):
 class Cabinet(Base):
     __tablename__ = 'cabinet'
     CabinetID = Column(Integer, primary_key=True)
-    CabinetNum = Column(String, nullable=False)
-    CabinetName = Column(String, nullable=False)
+    CabinetNum = Column(String(255), nullable=False)
+    CabinetName = Column(String(255), nullable=False)
     ZoneID = Column(Integer, ForeignKey('zone.ZoneID'))
 
     zone = relationship("Zone", back_populates="cabinets")
@@ -59,8 +58,8 @@ class Equipment(Base):
     EquipmentTypeID = Column(Integer, ForeignKey('equipment_type.EquipTypeID'))
     EquipmentStatusID = Column(Integer, ForeignKey('equipment_status.EquipmenStatusID'))
     CabinetID = Column(Integer, ForeignKey('cabinet.CabinetID'))
-    EquipmentName = Column(String, nullable=False)
-    SN = Column(String, nullable=False)
+    EquipmentName = Column(String(255), nullable=False)
+    SN = Column(String(255), nullable=False)
 
     equipment_type = relationship("EquipmentType", back_populates="equipment")
     equipment_status = relationship("EquipmentStatus", back_populates="equipment")
@@ -70,7 +69,7 @@ class Equipment(Base):
 class RequestStatus(Base):
     __tablename__ = 'request_status'
     RequestStatusID = Column(Integer, primary_key=True)
-    RequestStatusName = Column(String, nullable=False)
+    RequestStatusName = Column(String(255), nullable=False)
 
     requests = relationship("Request", back_populates="request_status")
 
@@ -80,7 +79,7 @@ class Request(Base):
     RequestID = Column(Integer, primary_key=True)
     TG_ID = Column(Integer, ForeignKey('user.TG_ID'))
     RequestStatusID = Column(Integer, ForeignKey('request_status.RequestStatusID'))
-    Description = Column(String, nullable=False)
+    Description = Column(String(255), nullable=False)
 
     user = relationship("User", back_populates="requests")
     request_status = relationship("RequestStatus", back_populates="requests")

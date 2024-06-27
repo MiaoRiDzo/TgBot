@@ -1,5 +1,5 @@
 import asyncio
-import logging
+import logging 
 from config import *
 from DB.create import *
 from DB.deleter import *
@@ -15,22 +15,23 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    user = User(
-        TG_ID = int(message.from_user.id),
-        UserName = message.from_user.first_name
-    )
-    await message.answer(f'Пользователь {user.UserName} с ID {user.TG_ID} добавлен')
-    addObject(user)
+    if(not Session(engine).query(User).get(message.from_user.id)):
+        user = User(
+            TG_ID = message.from_user.id,
+            UserName = message.from_user.first_name
+        )
+        await message.answer(f'Пользователь:\n{message.from_user.first_name} с ID:{message.from_user.id}\nдобавлен')
+        addObject(user)
+    else:
+        await message.answer(f'Пользователь:\n{message.from_user.first_name} с ID:{message.from_user.id}\nбыл зарегистрирован')
 
 @dp.message(Command("del"))
 async def cmd_del(message: types.Message):
-    session = Session(engine)
-    user = session.query(User).get(message.from_user.id)
     try:
-        delObj(user)
-        await message.answer(f'Пользователь {user.UserName} с ID {user.TG_ID} удален')
-    except Exception as error:
-        await message.answer(f'Ошибка:\n{error}')
+        delObj(message.from_user.id, User)
+        await message.answer(f'user {message.from_user.id} deleted')
+    except:
+        await message.answer(f'Данного пользователя не существет')
 
 
 
