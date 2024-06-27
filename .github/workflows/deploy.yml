@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install expect
-        run: sudo apt-get install -y expect
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -25,17 +25,8 @@ jobs:
         env:
           SSHPASS: ${{ secrets.SSH_PASSWORD }}
         run: |
-          expect <<EOF
-          spawn ssh -p 22 -o StrictHostKeyChecking=no admin_63@178.161.150.241
-          expect "*password:"
-          send "$SSHPASS\r"
-          expect "$ "
-          send "cd /home/admin_63/TgBot\r"
-          expect "$ "
-          send "git pull origin main\r"
-          expect "$ "
-          send "echo $SSHPASS | sudo -S systemctl restart aiogram_bot.service\r"
-          expect "$ "
-          send "exit\r"
-          expect eof
+          sshpass -e ssh -p 22 -o StrictHostKeyChecking=no admin_63@178.161.150.241 << 'EOF'
+            cd /home/admin_63/TgBot
+            git pull origin main
+            echo $SSHPASS | sudo -S systemctl restart aiogram_bot.service
           EOF
