@@ -23,5 +23,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no admin_63@178.161.150.241 << 'EOF'
             cd /home/admin_63/TgBot
             git pull origin main
+            python3 -m venv tgEnv/
             python3 main.py
           EOF
