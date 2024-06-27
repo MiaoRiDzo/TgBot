@@ -13,14 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Deploy to server
+        env:
+          SSHPASS: ${{ secrets.SSH_PASSWORD }}
         run: |
-          ssh -o StrictHostKeyChecking=no -p 22 admin_63@178.161.150.241 << 'EOF'
+          sshpass -e ssh -o StrictHostKeyChecking=no admin_63@178.161.150.241 << 'EOF'
             cd /home/admin_63/TgBot
             git pull origin main
             sudo systemctl restart aiogram_bot.service
