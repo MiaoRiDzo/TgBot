@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, MetaData, Table, Integer, String, Column, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-# from DBconfig import engine 
+#from DBconfig import engine 
 # Create an engine
 
 # Define the base class
@@ -83,3 +83,5 @@ class Request(Base):
 
     user = relationship("User", back_populates="requests")
     request_status = relationship("RequestStatus", back_populates="requests")
+
+#Base.metadata.create_all(engine)
